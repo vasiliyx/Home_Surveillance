@@ -105,7 +105,7 @@ if __name__ == "__main__":
         time_str = datetime.datetime.fromtimestamp(ts).strftime('%Y/%m/%d %H:%M:%S');
 
         # Draw the status variables on the screen
-        Draw_str(vis, (20, 20), 'change: %d %' % relative_change); # print the counter of tracks on the mat
+        Draw_str(vis, (20, 20), 'change: %d percent' % relative_change); # print the counter of tracks on the mat
         Draw_str(vis, (20, 40), 'fps: %d' % fps.Get()); # print the fps on the mat
         Draw_str(vis, (20, 60), time_str); # print the fps on the mat
 
@@ -125,7 +125,7 @@ if __name__ == "__main__":
                 
                 # Define the codec and create VideoWriter object 
                 fourcc = cv2.VideoWriter_fourcc(*'XVID');
-                out = cv2.VideoWriter(file_timestamp + '.avi', fourcc, 14.0, (w, h)); # 14 fps
+                out = cv2.VideoWriter('./../'+file_timestamp + '.avi', fourcc, 14.0, (w, h)); # 14 fps
                 pass;
 
             timer.Start(5.0); # Start timer with X sec timeout
