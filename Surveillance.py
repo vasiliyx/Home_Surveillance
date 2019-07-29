@@ -3,6 +3,10 @@ This monitors the environment, and if motion is detected, start recording.
     - Perform MOG2 algorython (adaptive background subtraction)
     - Calculate the percent change of the scene
     - If the percent change threshold is hit, start recording for some time in a new file
+
+Output:
+    Video files are saved one directory behind the working directory
+
 By Vasiliy Baryshnikov
 '''
 
@@ -15,6 +19,10 @@ import time;
 import datetime;
 
 myImagePath = 0;
+
+PERCENT_CHANGE_THRESHOLD = 10; # If the forground is different from the background by X %, start recording
+VIDEO_OUT_FPS = 14.0; # the video output configuration fps. (has to be the same as camera fps)
+RECORDING_TIMEOUT = 5.0; # if no new motion is detected within X seconds, stop recording.
 
 #--------------------------------------------------------------------------------
 ## Timer class keeps track of the time and the timeout functionality.
@@ -105,18 +113,18 @@ if __name__ == "__main__":
         time_str = datetime.datetime.fromtimestamp(ts).strftime('%Y/%m/%d %H:%M:%S');
 
         # Draw the status variables on the screen
-        Draw_str(vis, (20, 20), 'change: %d percent' % relative_change); # print the counter of tracks on the mat
+        Draw_str(vis, (20, 20), "change: %d" % relative_change); # print the counter of tracks on the mat
         Draw_str(vis, (20, 40), 'fps: %d' % fps.Get()); # print the fps on the mat
         Draw_str(vis, (20, 60), time_str); # print the fps on the mat
 
         # Show!
         #cv2.imshow('fgmask', fgmask);
-        cv2.imshow('vis', vis);
+        #cv2.imshow('vis', vis);
              
         # Output the frame to the file if necessary
         
         # Relative Change Threshold
-        if relative_change >= 10:
+        if relative_change >= PERCENT_CHANGE_THRESHOLD:
       
             # If we are not already recording, start recording into a new file
             if not isRecording:
@@ -125,10 +133,10 @@ if __name__ == "__main__":
                 
                 # Define the codec and create VideoWriter object 
                 fourcc = cv2.VideoWriter_fourcc(*'XVID');
-                out = cv2.VideoWriter('./../'+file_timestamp + '.avi', fourcc, 14.0, (w, h)); # 14 fps
+                out = cv2.VideoWriter('./../'+file_timestamp + '.avi', fourcc, VIDEO_OUT_FPS, (w, h)); # 14 fps
                 pass;
 
-            timer.Start(5.0); # Start timer with X sec timeout
+            timer.Start(RECORDING_TIMEOUT); # Start timer with X sec timeout
             pass;
 
         # Record until the timer timeout

@@ -1,5 +1,12 @@
 # Home_Surveillance
 
-This project is ash to run on Python3 with OpenCV4
+## Requirements:
 
+Python 3
+https://www.python.org/downloads/
 
+OpenCV 4
+`pip3 install opencv-python`
+
+NumPy
+`pip3 install numpy`
